@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReWear User Home</title>
+    <script src="/script.js"></script>
+    <style>
+      * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #fdfcfb, #e2d1c3);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #222831, #393e46);
+  color: #ffd369;
+  padding: 2rem 1rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* Navigation */
+nav {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.dropbtn {
+  background: #00adb5;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.dropbtn:hover {
+  background: #019ca3;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 160px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+  border-radius: 6px;
+  overflow: hidden;
+  right: 0;
+}
+
+.dropdown-content a,
+.dropdown-content button {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  background: none;
+  width: 100%;
+  text-align: left;
+  border: none;
+}
+
+.dropdown-content a:hover,
+.dropdown-content button:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Main Section */
+main {
+  flex: 1;
+  padding: 2rem;
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 1200px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+main:hover {
+  transform: scale(1.01);
+}
+
+main h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #222831;
+}
+
+/* Donate Button */
+.register-button-container {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.register-button {
+  background: linear-gradient(135deg, #00adb5, #00797c);
+  color: #fff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.register-button:hover {
+  background: linear-gradient(135deg, #00797c, #005f61);
+}
+
+/* Posts */
+#posts-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#posts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
+
+.post-box {
+  background: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 280px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.post-box img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: 0.3s ease;
+}
+
+.post-box img:hover {
+  filter: brightness(0.95);
+}
+
+.post-box .info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.post-box .info h3 {
+  font-size: 1.2rem;
+  color: #00797c;
+  margin-bottom: 0.5rem;
+}
+
+.post-box .info p {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* Footer */
+footer {
+  background-color: #222831;
+  color: #eee;
+  text-align: center;
+  padding: 1.2rem;
+  font-size: 1rem;
+  margin-top: auto;
+}
+
+footer a {
+  color: #ffd369;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    top: auto;
+    position: static;
+    align-items: flex-end;
+  }
+
+  .post-box {
+    width: 90%;
+  }
+
+  main {
+    width: 95%;
+    padding: 1.5rem;
+  }
+}
+
+.button-container {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.button {
+  background: linear-gradient(135deg, #e00c0c, #da0909);
+  color: #fff;
+  padding: 0.3rem 0.5rem; /* Reduced padding */
+  font-size: 0.80rem;       /* Reduced font size */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+
+.button:hover {
+  background: linear-gradient(135deg, #1807cf, #070ad3);
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1><svg width="280" height="80" viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .highlight { font: bold 36px 'Poppins', sans-serif; fill: #ddab15; }
+    .text-white { font: bold 36px 'Poppins', sans-serif; fill: #fff; }
+    .hanger { stroke: #ddab15; stroke-width: 4; fill: none; }
+  </style>
+
+  <circle cx="50" cy="50" r="40" stroke="#ddab15" stroke-width="4" fill="none" />
+  <path d="M30 45 Q50 20, 70 45 L50 70 Z" class="hanger"/>
+  <circle cx="50" cy="35" r="3" fill="#ddab15" />
+
+  <text x="100" y="60">
+    <tspan class="highlight">Re</tspan>
+    <tspan class="text-white">Wear</tspan>
+  </text>
+</svg>
+</h1>
+        <nav>
+            <div class="dropdown">
+                <button class="dropbtn">Profile</button>
+                <div class="dropdown-content">
+                    <a href="#" id="account-name">Account Name</a>
+                    <a href="#" id="user-id">User ID</a>
+                    <a href="./Submissions.html">Donations</a>
+                    <button class="logout-button" onClick="logout()">Logout</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <center><h2>Welcome to ReWear</h2></center>
+        <div class="register-button-container">
+            <a href="/Event" class="register-button">Donate</a>
+        </div>
+
+        <section id="posts-container">
+            <h2><Center>Recent Posts</Center></h2>
+            <div id="posts"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ReWear. Designed with purpose and passion.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await valid(); // 'valid()' function assumed to be in script.js
+            if (user) {
+                document.getElementById('account-name').innerText = user.username;
+                document.getElementById('user-id').innerText = user.userId.substring(0,6);
+                loadPosts(); // Fetch and show posts
+            } else {
+                // Redirect to login if not authenticated
+                window.location.href = '/Login';
+            }
+        });
+
+        async function loadPosts() {
+            try {
+                const response = await fetch('/api/posts');
+                if (!response.ok) throw new Error('Failed to fetch posts');
+
+                const posts = await response.json();
+                const postsContainer = document.getElementById('posts');
+                postsContainer.innerHTML = ''; // Clear existing posts
+
+                posts.forEach(post => {
+                    const card = document.createElement('div');
+                    card.classList.add('post-box');
+
+                    const img = document.createElement('img');
+                    // Ensure image data is correctly formatted for display
+                    img.src = `data:${post.image.contentType};base64,${arrayBufferToBase64(post.image.data.data)}`;
+                    img.alt = post.name;
+
+                    const info = document.createElement('div');
+                    info.className = 'info';
+                    info.innerHTML = `
+                        <h3>${post.name}</h3>
+                        <p><strong>Email:</strong> ${post.email}</p>
+                        <p><strong>Mobile:</strong> ${post.mobile}</p>
+                        <p><strong>Location:</strong> ${post.location}</p>
+                        <br>
+                        <center><a href="/Claimform.html?donationId=${post._id}" class="button">Claim</a></center>
+                    `;
+
+                    card.appendChild(img);
+                    card.appendChild(info);
+                    postsContainer.appendChild(card);
+                });
+            } catch (err) {
+                console.error('Failed to load posts:', err);
+            }
+        }
+
+        // Helper function to convert ArrayBuffer to Base64
+        function arrayBufferToBase64(buffer) {
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            const len = bytes.byteLength;
+            for (let i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return window.btoa(binary);
+        }
+
+        // Logout function (assuming it's in script.js)
+        function logout() {
+            localStorage.removeItem('jwtToken');
+            window.location.href = '/Login';
+        }
+    </script>
+</body>
+</html>

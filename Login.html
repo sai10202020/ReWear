@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReWear Login</title>
+    <script src="./script.js"></script>
+   <style>
+    /* Reset and global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #efeee6, #f1da36);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 100px;
+    overflow-x: hidden;
+    color: #333;
+}
+
+/* Header */
+header {
+    width: 100%;
+    background-color: #ffffffcc;
+    backdrop-filter: blur(10px);
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #1d3557;
+    letter-spacing: 1px;
+}
+
+/* Login container */
+.login-container {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(18px);
+    border-radius: 20px;
+    padding: 50px 40px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.8s ease;
+    text-align: center;
+}
+
+.login-container:hover {
+    transform: scale(1.01);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+}
+
+.login-container h2 {
+    font-size: 32px;
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+/* Input fields */
+.input-group {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    background: #f0f4f8;
+    color: #333;
+    outline: none;
+    transition: box-shadow 0.3s ease;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1), inset -2px -2px 5px #ffffff;
+}
+
+.input-group input:focus {
+    box-shadow: 0 0 0 3px rgba(100, 149, 237, 0.3);
+}
+
+.input-group label {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 16px;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -10px;
+    font-size: 13px;
+    color: #1d3557;
+    background: #fff;
+    padding: 0 5px;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #457b9d, #1d3557);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #1d3557, #457b9d);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Links */
+.signup-link {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #444;
+}
+
+.signup-link a {
+    color: #1d3557;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 35px 25px;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+}
+
+</style>
+
+</head>
+<body>
+    <header>
+        <h1>ReWear</h1>
+    </header>
+    <div class="login-container">
+        <h2>Welcome</h2>
+        <h2>Sign in</h2>
+        <form id="loginpost">
+            <div class="input-group">
+                <input type="email" id="email" name="email" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+            </div>
+            <button type="submit">Login</button>
+            <div class="signup-link">
+                <p>No account? <a href="/Signup">Sign Up!</a></p>
+                <p>Back to <a href="/">Home</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginpost').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = e.target.email.value;
+            const password = e.target.password.value;
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    window.location.href = '/Home';
+                } else {
+                    alert(data.message);
+                }
+
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

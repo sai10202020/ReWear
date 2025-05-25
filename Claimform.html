@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Claim Donation - ReWear</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f6f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.form-container {
+  background-color: #ffffff;
+  padding: 2.5rem 3rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid #e0e0e0;
+}
+
+h2 {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.9rem;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+}
+
+form {
+  display: grid;
+  gap: 1.2rem;
+}
+
+label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #34495e;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  background-color: #fafafa;
+  color: #2c3e50;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #3b82f6;
+  background-color: #fff;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+button:hover {
+  background-color: #2563eb;
+}
+
+button:active {
+  background-color: #1d4ed8;
+}
+
+.note {
+  margin-top: 1.2rem;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <section class="form-container" aria-labelledby="formTitle">
+    <h2 id="formTitle">Claim Donation</h2>
+    <form id="claimForm" novalidate>
+      <div>
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" required placeholder="Your full name" />
+      </div>
+
+      <div>
+        <label for="mobile">Mobile Number</label>
+        <input id="mobile" name="mobile" type="tel" pattern="^\d{10}$" required placeholder="10-digit mobile number" />
+      </div>
+
+      <div>
+        <label for="email">Mail Id</label>
+        <input id="email" name="email" type="email" required placeholder="your.email@example.com" />
+      </div>
+
+      <div>
+        <label for="address">Address</label>
+        <textarea id="address" name="address" required placeholder="Your address"></textarea>
+      </div>
+
+      <div>
+        <label for="state">State</label>
+        <select id="state" name="state" required>
+           <option value="" disabled selected>Select your state</option>
+           <option value="AP">Andhra Pradesh</option>
+           <option value="AR">Arunachal Pradesh</option>
+           <option value="AS">Assam</option>
+           <option value="BR">Bihar</option>
+           <option value="CT">Chhattisgarh</option>
+           <option value="DL">Delhi</option>
+           <option value="GA">Goa</option>
+           <option value="GJ">Gujarat</option>
+           <option value="HR">Haryana</option>
+             </select>
+      </div>
+
+      <input type="hidden" id="donationId" name="donationId" />
+
+      <button type="submit">Submit</button>
+    </form>
+    <p class="note">All fields are mandatory</p>
+  </section>
+
+  <script>
+    const form = document.getElementById('claimForm');
+    const urlParams = new URLSearchParams(window.location.search);
+    const donationId = urlParams.get('donationId');
+    document.getElementById('donationId').value = donationId;
+
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const mobileInput = form.mobile;
+      const mobilePattern = /^\d{10}$/;
+      if (!mobilePattern.test(mobileInput.value)) {
+        alert('Please enter a valid 10-digit mobile number.');
+        mobileInput.focus();
+        return;
+      }
+
+      const formData = new FormData(form);
+      const data = {};
+      for (const [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+
+      try {
+        const response = await fetch('/api/claim', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json' // Set Content-Type for JSON
+          },
+          body: JSON.stringify(data), // Send as JSON
+        });
+
+        if (response.ok) {
+          alert('Claim submitted successfully! Thank you. Redirecting to home...');
+          window.location.href = '/Home'; // Redirect to user home after successful claim
+        } else {
+          const errorData = await response.json();
+          alert(`Failed to submit claim: ${errorData.message}`);
+        }
+      } catch (error) {
+        console.error('Error during claim submission:', error);
+        alert('An error occurred during claim submission. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>
